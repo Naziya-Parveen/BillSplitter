@@ -64,7 +64,8 @@ public class Register extends AppCompatActivity {
                 final String Password = password.getText().toString().trim();
                 final String Phone = phone.getText().toString().trim();
                 final String Name = name.getText().toString();
-
+                final String upCount = "0.0";
+                final String downCount = "0.0";
 
                 if(TextUtils.isEmpty(Email)){
                     email.requestFocus();
@@ -105,6 +106,8 @@ public class Register extends AppCompatActivity {
                             user.put("name",Name);
                             user.put("email",Email);
                             user.put("phone",Phone);
+                            user.put("upCount",upCount);
+                            user.put("downCount",downCount);
                             documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -119,7 +122,7 @@ public class Register extends AppCompatActivity {
 
                             startActivity(new Intent(getApplicationContext(),Login.class));
                         } else {
-                            Toast.makeText(Register.this, "An error occurred!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Register.this, "Error "+ task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

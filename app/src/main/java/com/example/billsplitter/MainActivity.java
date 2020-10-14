@@ -17,7 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import javax.annotation.Nullable;
 
 public class MainActivity extends AppCompatActivity {
-    TextView name, email, phone;
+    TextView name, phone, upCount, downCount;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String userID;
@@ -28,20 +28,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         name = findViewById(R.id.profileName);
-        email = findViewById(R.id.profileEmail);
         phone = findViewById(R.id.profilePhone);
+        upCount = findViewById(R.id.upCount);
+        downCount = findViewById(R.id.downCount);
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
         userID = fAuth.getCurrentUser().getUid();
-        DocumentReference documentReference = fStore.collection("users").document(userID);
+        final DocumentReference documentReference = fStore.collection("users").document(userID);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                assert documentSnapshot != null;
                 name.setText(documentSnapshot.getString("name"));
-                email.setText(documentSnapshot.getString("email"));
                 phone.setText(documentSnapshot.getString("phone"));
+                upCount.setText(documentSnapshot.getString("upCount"));
+                downCount.setText(documentSnapshot.getString("downCount"));
             }
         });
     }
